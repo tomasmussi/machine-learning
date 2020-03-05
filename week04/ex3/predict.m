@@ -20,14 +20,17 @@ p = zeros(size(X, 1), 1);
 %       information see 'help max'. If your examples are in rows, then, you
 %       can use max(A, [], 2) to obtain the max for each row.
 %
+% First layer to compute is the training examples, with the bias unit
+a0 = [ones(m,1), X];
 
+% Compute layer 1 by multiplying Training matrix with Theta1 transpose
+a1 = sigmoid(a0 * Theta1');
+% Add bias unit to a1
+a1 = [ones(m,1), a1];
 
-
-
-
-
-
-
+% Compute layer 2, aka as output layer
+a2 = a1 * Theta2';
+[max_vals, p] = max(a2, [], 2);
 
 % =========================================================================
 
