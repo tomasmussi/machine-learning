@@ -62,14 +62,28 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% 1) Forward propagation
+X = [ones(m, 1), X];
+% Convert y vector to a matrix
+Y = zeros(m, max(y));
+for i = 1:m
+  Y(i, y(i)) = 1;
+endfor
 
+% Do forward propagation
+a1 = sigmoid(Theta1 * X'); % Compute a1
+a1 = [ones(1, m); a1]; %Add zeros
+a2 = sigmoid(Theta2 * a1)';
+[max_vals, max_indexes] = max(a2, [], 2);
 
-
-
-
-
-
-
+% Compute cost
+for i = 1:m
+  for k = 1:num_labels
+    tmp = - Y(i,k) * log(a2(i,k)) - (1 - Y(i,k)) * log(1 - a2(i,k));
+    J += tmp;
+  endfor
+endfor
+J /= m;
 
 
 
