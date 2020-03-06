@@ -85,10 +85,20 @@ for i = 1:m
 endfor
 J /= m;
 
+% Add regularization to cost
+tmp = 0;
+for i = 1:size(Theta1, 1)
+  for j = 2:size(Theta1, 2)
+    tmp += Theta1(i,j)^2;
+  endfor
+endfor
 
-
-
-
+for i = 1:size(Theta2, 1)
+  for j = 2:size(Theta2, 2)
+    tmp += Theta2(i,j)^2;
+  endfor
+endfor
+J += (tmp * lambda) / (2 * m);
 
 
 
