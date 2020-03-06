@@ -106,8 +106,9 @@ delta_3 = zeros(size(Theta2));
 % 2) BACKPROPAGATION
 % As suggested, implement a for loop with 5 steps
 for t = 1:m
-  % Step 1: Forward propagatinon
-  z2 = Theta1 * X(t,:)';
+  % Step 1: Forward propagation
+  a1 = X(t,:);
+  z2 = Theta1 * a1';
   a2 = sigmoid(z2);
   a2z = [1 ; a2];
   z3 = Theta2 * a2z;
@@ -119,14 +120,16 @@ for t = 1:m
   d3 = a3 - y_vec;
   
   % Step 3: now compute error in layer 2
-  d2 = Theta2' * d3 .* sigmoidGradient([0; z2]); % Gradient for sample t
+  % Remove from Theta2 the first column which corresponds to Bias unit
+  d2 = (Theta2(:,2:end))' * d3 .* sigmoidGradient(z2); % Gradient for sample t
   
   % Step 4: accumulate gradient
-  delta_3 = delta_3 + d3 * [0; a2]';
+  delta_3 = delta_3 + d3 * [1; a2]';
   
   % Activations in first layer are the sample inputs
-  a1 = X(t,:);
-  temp_m = d2(2:end) * a1;
+  
+  temp_m = d2 * a1;
+  % temp_m(:,1) = zeros(rows(temp_m), 1);
   % Add zeros to sum to gradient to avoid changing bias
   % temp_m = [zeros(25,1), temp_m];
   delta_2 = delta_2 + temp_m;
