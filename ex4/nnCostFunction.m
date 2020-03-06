@@ -100,9 +100,46 @@ for i = 1:size(Theta2, 1)
 endfor
 J += (tmp * lambda) / (2 * m);
 
+delta_2 = zeros(size(Theta1));
+delta_3 = zeros(size(Theta2));
 
+% 2) BACKPROPAGATION
+% As suggested, implement a for loop with 5 steps
+for t = 1:m
+  % Step 1: Forward propagatinon
+  z2 = Theta1 * X(t,:)';
+  a2 = sigmoid(z2);
+  a2z = [1 ; a2];
+  z3 = Theta2 * a2z;
+  a3 = sigmoid(z3);
+   
+  % Step 2: Compute error in layer 3
+  % Y is a matrix that for each sample, it has a vector with 1 in corresponding column class
+  y_vec = Y(t,:)';
+  d3 = a3 - y_vec;
+  
+  % Step 3: now compute error in layer 2
+  d2 = Theta2' * d3 .* sigmoidGradient([0; z2]); % Gradient for sample t
+  
+  % Step 4: accumulate gradient
+  delta_3 = delta_3 + d3 * [0; a2]';
+  
+  % Activations in first layer are the sample inputs
+  a1 = X(t,:);
+  temp_m = d2(2:end) * a1;
+  % Add zeros to sum to gradient to avoid changing bias
+  % temp_m = [zeros(25,1), temp_m];
+  delta_2 = delta_2 + temp_m;
+endfor
 
+% Once iterated over all samples, update Theta_grads
 
+% Average by all samples
+delta_2 = delta_2 / m;
+delta_3 = delta_3 / m;
+
+Theta1_grad = Theta1_grad + delta_2;
+Theta2_grad = Theta2_grad + delta_3;
 
 % -------------------------------------------------------------
 
