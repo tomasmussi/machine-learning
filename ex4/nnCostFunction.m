@@ -141,8 +141,16 @@ endfor
 delta_2 = delta_2 / m;
 delta_3 = delta_3 / m;
 
-Theta1_grad = Theta1_grad + delta_2;
-Theta2_grad = Theta2_grad + delta_3;
+% Regularization to delta matrices
+regTheta1 = (lambda/m) .* Theta1;
+regTheta1(:,1) = zeros(rows(Theta1),1);
+
+regTheta2 = (lambda/m) .* Theta2;
+regTheta2(:,1) = zeros(rows(Theta2),1);
+
+
+Theta1_grad = Theta1_grad + delta_2 + regTheta1;
+Theta2_grad = Theta2_grad + delta_3 + regTheta2;
 
 % -------------------------------------------------------------
 
