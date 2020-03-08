@@ -39,7 +39,22 @@ error_val = zeros(length(lambda_vec), 1);
 %
 %
 
+for i = 1:length(lambda_vec)
+  
+  lambda = lambda_vec(i);
 
+  % Theta fitted with training set
+  theta = trainLinearReg(X, y, lambda);
+  
+  % Now, compute errors on training and test sets
+  
+  % In error, do NOT regularize cost function
+  [error_train(i), grad] = linearRegCostFunction(X, y, theta, 0);
+  % On cross validation set, use ALL test samples to compute error
+  [error_val(i), grad] = linearRegCostFunction(Xval, yval, theta, 0);
+  
+
+endfor
 
 
 
