@@ -21,9 +21,19 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
-
-
-
+for i = 1:rows(X)
+  sample = X(i,:);
+  min_d = inf; % Distance should be >= 0 so it is valid to find minimum with inf
+  centroid = -1;
+  for c = 1:rows(centroids)
+    result = sum((sample - centroids(c,:)).^2);
+    if (result < min_d)
+      centroid = c;
+      min_d = result;
+    endif
+  endfor
+  idx(i) = centroid;
+endfor
 
 
 
