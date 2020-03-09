@@ -21,9 +21,9 @@ sigma2 = zeros(n, 1);
 %               should contain variance of the i-th feature.
 %
 
+mu = sum(X) ./ m;
 
-
-
+sigma2 = var(X, 1); % Use 1 to average by m, not by m-1
 
 
 
