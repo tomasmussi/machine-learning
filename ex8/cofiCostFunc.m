@@ -40,13 +40,16 @@ Theta_grad = zeros(size(Theta));
 %                     partial derivatives w.r.t. to each element of Theta
 %
 
+vectorized = ((X * Theta' - Y) .* R).^ 2;
+vectorized = vectorized ./ 2;
+
+J = sum(sum(vectorized));
 
 
+grad = ((X * Theta') - Y) .* R;
 
-
-
-
-
+X_grad = grad * Theta;
+Theta_grad = grad' * X;
 
 
 
