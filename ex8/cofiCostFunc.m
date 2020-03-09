@@ -39,24 +39,25 @@ Theta_grad = zeros(size(Theta));
 %        Theta_grad - num_users x num_features matrix, containing the 
 %                     partial derivatives w.r.t. to each element of Theta
 %
-
+% Cost function
 vectorized = ((X * Theta' - Y) .* R).^ 2;
 vectorized = vectorized ./ 2;
 
 J = sum(sum(vectorized));
 
-
+% Gradient computing
 grad = ((X * Theta') - Y) .* R;
 
 X_grad = grad * Theta;
 Theta_grad = grad' * X;
 
+% Cost function regularization
+J += (lambda/2) * sum(sum((Theta.^ 2)));
+J += (lambda/2) * sum(sum((X.^ 2)));
 
-
-
-
-
-
+% Gradient regularization
+X_grad = X_grad + (lambda .* X);
+Theta_grad = Theta_grad + (lambda .* Theta);
 
 % =============================================================
 
