@@ -26,7 +26,7 @@ for epsilon = min(pval):stepsize:max(pval)
   predicted = pval < epsilon;
 
   % Get all true positives, that is, the ones that are truly 1
-  tp = sum(yval == 1);
+  tp = sum((predicted == 1) & (yval == 1));
 
   fp = sum((predicted == 1) & (yval == 0));
 
